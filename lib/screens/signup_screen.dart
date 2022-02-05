@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:beacon/resources/auth_methods.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:beacon/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +19,7 @@ class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -23,6 +27,8 @@ class _SignupScreen extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
+
+  void selectImage() {}
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +48,23 @@ class _SignupScreen extends State<SignupScreen> {
               height: 100,
             ),
             const SizedBox(height: 24),
+            Stack(children: [
+              const CircleAvatar(
+                radius: 64,
+                backgroundImage: NetworkImage(
+                    'https://pbs.twimg.com/profile_images/1312147085412704258/Jy2r2LRc.jpg'),
+              ),
+              Positioned(
+                bottom: -10,
+                left: 80,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.add_a_photo,
+                  ),
+                ),
+              ),
+            ]),
             //Username
             TextFieldInput(
               hintText: 'Digite seu nome',
@@ -67,11 +90,10 @@ class _SignupScreen extends State<SignupScreen> {
             InkWell(
               onTap: () async {
                 String res = await AuthMethods().SignUpUser(
-                  username: _usernameController.text,
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  file: 
-                );
+                    username: _usernameController.text,
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    file: _image!);
                 print(res);
               },
               child: Container(
