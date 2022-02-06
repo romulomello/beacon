@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:beacon/resources/auth_methods.dart';
+import 'package:beacon/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:beacon/utils/colors.dart';
@@ -20,6 +21,7 @@ class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -28,7 +30,33 @@ class _SignupScreen extends State<SignupScreen> {
     _passwordController.dispose();
   }
 
-  void selectImage() {}
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  void singUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().SignUpUser(
+      username: _usernameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      file: _image!,
+    );
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res != "Registrado com Sucesso") {
+      showSnackBar(res, context);
+    }
+
+    print(res);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,31 +68,37 @@ class _SignupScreen extends State<SignupScreen> {
           width: double.infinity,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Flexible(child: Container(), flex: 2),
+            Flexible(child: Container(), flex: 1),
             //Logo
             SvgPicture.asset(
               'assets/logo.svg',
               //color: primaryColor,
-              height: 100,
+              height: 50,
             ),
             const SizedBox(height: 24),
-            Stack(children: [
-              const CircleAvatar(
-                radius: 64,
-                backgroundImage: NetworkImage(
-                    'https://pbs.twimg.com/profile_images/1312147085412704258/Jy2r2LRc.jpg'),
-              ),
-              Positioned(
-                bottom: -10,
-                left: 80,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.add_a_photo,
+            Stack(
+              children: [
+                _image != null
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundImage: MemoryImage(_image!),
+                      )
+                    : const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                            'https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg'),
+                      ),
+                Positioned(
+                  bottom: -10,
+                  left: 80,
+                  child: IconButton(
+                    onPressed: selectImage,
+                    icon: const Icon(Icons.add_a_photo),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
+            const SizedBox(height: 24),
             //Username
             TextFieldInput(
               hintText: 'Digite seu nome',
@@ -88,18 +122,15 @@ class _SignupScreen extends State<SignupScreen> {
             ),
             const SizedBox(height: 12),
             InkWell(
-              onTap: () async {
-                String res = await AuthMethods().SignUpUser(
-                    username: _usernameController.text,
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    file: _image!);
-                print(res);
-              },
+              onTap: singUpUser,
               child: Container(
-                child: const Text('REGISTRAR',
-                    style:
-                        TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 255, 255, 255)))
+                    : const Text('REGISTRAR',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255))),
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),

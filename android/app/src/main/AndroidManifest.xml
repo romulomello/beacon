@@ -4,6 +4,7 @@
         android:label="beacon"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!--andorid:requestLegacyExternalStorage="true">-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
