@@ -1,4 +1,8 @@
+import 'package:beacon/resposive/mobile_screen_layout.dart';
+import 'package:beacon/resposive/resposive_layout_screen.dart';
+import 'package:beacon/resposive/web_screen_layout.dart';
 import 'package:beacon/screens/home_screen.dart';
+import 'package:beacon/screens/signup_screen.dart';
 import 'package:beacon/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:beacon/utils/colors.dart';
@@ -33,8 +37,14 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
 
     if (res == "Logado com sucesso") {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            ),
+          ),
+          (route) => false);
     } else {
       showSnackBar(res, context);
     }
@@ -53,21 +63,21 @@ class _LoginScreenState extends State<LoginScreen> {
           width: double.infinity,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Flexible(child: Container(), flex: 2),
+            Flexible(child: Container(), flex: 1),
             //Logo
             SvgPicture.asset(
               'assets/logo.svg',
               //color: primaryColor,
               height: 100,
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 54),
             //Email
             TextFieldInput(
               hintText: 'Digite seu email',
               textInputType: TextInputType.emailAddress,
               textEditingController: _emailController,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             //Senha
             TextFieldInput(
               hintText: 'Digite sua senha',
@@ -75,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
               textEditingController: _passwordController,
               isPass: true,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 18),
             InkWell(
               child: Container(
                 child: !_isLoading
@@ -110,7 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const SignupScreen()));
+                },
                 child: Container(
                   child: const Text(
                     "Registre-se",

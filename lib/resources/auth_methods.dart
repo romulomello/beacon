@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:beacon/resources/storage_methods.dart';
 import 'package:beacon/screens/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:beacon/models/user.dart' as model;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,10 +22,11 @@ class AuthMethods {
   }) async {
     String res = "ERROR";
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          username.isNotEmpty ||
-          file != null) {
+      //if (file == null) {
+      //file = Image ? NetworkImage('https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg');
+      //}
+      if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
+        //file != null) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
@@ -32,14 +34,18 @@ class AuthMethods {
             .uploadImageToStorage('profilePics', file, false);
         //print(cred.user.displayName);
 
-        await _firestore.collection('users').doc(cred.user!.uid).set({
-          'username': username,
-          'uid': cred.user!.uid,
-          'email': email,
-          'followers': [],
-          'following': [],
-          'photoUrl': photoUrl,
-        });
+        model.User user = model.User(
+          username: username,
+          uid: cred.user!.uid,
+          email: email,
+          followers: [],
+          following: [],
+          photoUrl: photoUrl,
+        );
+
+        await _firestore.collection('users').doc(cred.user!.uid).set(
+              user.toJson(),
+            );
         res = "Registrado com Sucesso";
       }
     } on FirebaseAuthException catch (err) {

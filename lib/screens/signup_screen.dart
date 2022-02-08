@@ -1,6 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:beacon/resources/auth_methods.dart';
+import 'package:beacon/resposive/mobile_screen_layout.dart';
+import 'package:beacon/resposive/resposive_layout_screen.dart';
+import 'package:beacon/resposive/web_screen_layout.dart';
+import 'package:beacon/screens/login_screen.dart';
 import 'package:beacon/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +57,15 @@ class _SignupScreen extends State<SignupScreen> {
 
     if (res != "Registrado com Sucesso") {
       showSnackBar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     }
 
     print(res);
@@ -61,6 +74,7 @@ class _SignupScreen extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         //body: Text('Login screen'),
         body: SafeArea(
       child: Container(
@@ -98,7 +112,7 @@ class _SignupScreen extends State<SignupScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             //Username
             TextFieldInput(
               hintText: 'Digite seu nome',
@@ -155,7 +169,10 @@ class _SignupScreen extends State<SignupScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const LoginScreen()));
+                },
                 child: Container(
                   child: const Text(
                     "Entre aqui",
