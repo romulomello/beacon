@@ -1,19 +1,25 @@
-//import 'dart:typed_data';
-
 import 'dart:typed_data';
 
 import 'package:beacon/resources/storage_methods.dart';
-import 'package:beacon/screens/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:beacon/models/user.dart' as model;
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+    //return model.User(followers: snap.data() as Map<String, dynamic>)['followers'];
+    return model.User.fromSnap(snap);
+  }
+
   //registro
+  // ignore: non_constant_identifier_names
   Future<String> SignUpUser({
     required String username,
     required String email,
@@ -22,17 +28,12 @@ class AuthMethods {
   }) async {
     String res = "ERROR";
     try {
-      //if (file == null) {
-      //file = Image ? NetworkImage('https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg');
-      //}
       if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
-        //file != null) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
-        //print(cred.user.displayName);
 
         model.User user = model.User(
           username: username,

@@ -1,16 +1,26 @@
-# beacon
+# Beacon
 
-A new Flutter project.
+A ideia do Beacon é ser uma rede social na qual você consegue compartilhar e publicar sobre eventos e acontecimentos da sua localização. Um dos outros objetivos do aplicativo é permitir acompanhar diferentes tópicos e perfis de acordo com a preferência do usuário.
 
-## Getting Started
+Seguindo essa ideia, seria fornecida na interface:
+Um feed de acontecimentos perto do usuário, ordenados por relevância, horário de publicação, interesses, etc.
+Uma mapa que mostra em agrupamentos os acontecimentos em seus respectivos lugares também com diversas “views”.
 
-This project is a starting point for a Flutter application.
+## Figma
 
-A few resources to get you started if this is your first Flutter project:
+<style >
+.qualquercoisaai{
+    display: flex;
+    justify-content: space-between;
+}
+</style>
+<div class="qualquercoisaai"> 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<img src="https://user-images.githubusercontent.com/11229363/153519000-aa9fa4a6-1165-4019-b9e3-2df017f4bc5c.png">
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://user-images.githubusercontent.com/11229363/153519031-8ac73640-169a-4193-a3d9-f26a35aedca9.png">
+</div>
+
+## Codigo
+
+Aplicativos mobile e Web programado em Flutter/Dart, com banco de dados Firebase.

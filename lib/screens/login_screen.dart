@@ -1,11 +1,9 @@
 import 'package:beacon/resposive/mobile_screen_layout.dart';
 import 'package:beacon/resposive/resposive_layout_screen.dart';
 import 'package:beacon/resposive/web_screen_layout.dart';
-import 'package:beacon/screens/home_screen.dart';
 import 'package:beacon/screens/signup_screen.dart';
 import 'package:beacon/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:beacon/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:beacon/resources/auth_methods.dart';
 
@@ -25,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
   }

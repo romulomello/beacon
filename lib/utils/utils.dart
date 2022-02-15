@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,6 +11,7 @@ pickImage(ImageSource source) async {
     //return File(_file.path);
   }
 
+  // ignore: avoid_print
   print("Não foi selecionado imagem");
 }
 
